@@ -5,6 +5,7 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
+    """BasicCache class"""
     def put(self, key, item):
         """put new value into cache_data dictionary
         """

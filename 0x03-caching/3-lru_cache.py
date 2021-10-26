@@ -36,6 +36,6 @@ class LRUCache(BaseCaching):
         """
         if key and key in self.cache_data:
             self.__keys.append(self.__keys.pop(
-                self.current_keys.index(key)))
+                self.__keys.index(key)))
             return self.cache_data.get(key)
         return None

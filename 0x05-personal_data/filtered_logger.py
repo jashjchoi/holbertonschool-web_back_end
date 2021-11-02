@@ -70,3 +70,19 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
     return mysql.connector.connect(user=user, password=password,
                                    host=host, database=data)
+
+
+# Still working on Main function task 4: not returning the correct format
+# Attribute error
+# def main():
+#     """
+#     Implement a main function that takes no arguments and returns nothing"""
+#     mydb = get_db()
+#     mycursor = mydb.cursor()
+#     mycursor.execute('SELECT * from users')
+#     formatter = RedactingFormatter(fields=PII_FIELDS)
+#     my_logger = get_logger()
+
+
+# if __name__ == "__main__":
+#     main()

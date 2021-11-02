@@ -7,6 +7,9 @@ from typing import List
 import logging
 
 
+PII_FIELDS = ('email', 'phone', 'ssn', 'password', 'name')
+
+
 class RedactingFormatter(logging.Formatter):
     """class to accept a list of strings fields constructor argument
     Implement the format method to filter values in incoming log records
@@ -37,3 +40,17 @@ def filter_datum(fields: List[str], redaction: str, message: str,
         message = re.sub(f'{i}=.+?{separator}',
                          f'{i}={redaction}{separator}', message)
     return message
+
+
+def get_logger() -> logging.Logger:
+    """Implement a get_logger function that takes no arguments
+    and returns a logging.Logger object
+    """
+    user_data = logging.getLogger("user_data")
+    user_data.setLevel(logging.INFO)
+    user_data.propagate = False
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter(RedactingFormatter(PII_FIELDS))
+    handler.setFormatter(formatter)
+    user_data.addHandler(handler)
+    return user_data

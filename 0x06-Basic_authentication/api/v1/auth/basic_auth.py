@@ -3,6 +3,7 @@
 """
 from api.v1.auth.auth import Auth
 import base64
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -33,3 +34,19 @@ class BasicAuth(Auth):
         except Exception:
             return None
         return decoded_code
+
+    def extract_user_credentials(self,
+                                 decoded_base64_authorization_header: str
+                                 ) -> (str, str):
+        """returns the user email and password from the Base64 decoded value
+        """
+        if (
+            not decoded_base64_authorization_header or \
+            type(decoded_base64_authorization_header) != str or \
+            ':' not in decoded_base64_authorization_header
+        ):
+            return None, None
+        sep = decoded_base64_authorization_header.find(":")
+        user = decoded_base64_authorization_header[:sep]
+        pwd = decoded_base64_authorization_header[sep + 1:]
+        return user, pwd

@@ -41,8 +41,8 @@ class BasicAuth(Auth):
         """returns the user email and password from the Base64 decoded value
         """
         if (
-            not decoded_base64_authorization_header or \
-            type(decoded_base64_authorization_header) != str or \
+            not decoded_base64_authorization_header or
+            type(decoded_base64_authorization_header) != str or
             ':' not in decoded_base64_authorization_header
         ):
             return None, None

@@ -4,7 +4,7 @@
 from api.v1.auth.auth import Auth
 import base64
 from models.user import User
-
+from typing import TypeVar
 
 class BasicAuth(Auth):
     """BasicAuth that inherits from Auth"""
@@ -50,3 +50,22 @@ class BasicAuth(Auth):
         user = decoded_base64_authorization_header[:sep]
         pwd = decoded_base64_authorization_header[sep + 1:]
         return user, pwd
+
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """returns the User instance based on his email and password
+        """
+        if (
+            not user_email or type(user_email) != str or not
+            user_pwd or type(user_pwd) != str
+        ):
+            return None
+        try:
+            user = User.search({'email': user_email})
+        except Exception:
+            return None
+        if user:
+            for u in user:
+                if u.is_valid_password(user_pwd):
+                    return u
+        return None

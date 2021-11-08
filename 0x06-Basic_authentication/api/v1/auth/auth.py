@@ -16,15 +16,20 @@ class Auth:
         Improve def require_auth(self, path, excluded_paths)
         by allowing * at the end of excluded paths.
         """
-        if path is None:
+        if not path or not excluded_paths:
             return True
-        if excluded_paths is None or excluded_paths == []:
-            return True
-        if path in excluded_paths:
-            return False
-        if path[-1] != '/':
-            path += '/'
+
+        path += '/' if path[-1] != '/' else ''
+        wildcard = any(p.endswith("*") for p in excluded_paths)
+
+        if not wildcard:
+            if path in excluded_paths:
+                return False
+
         for p in excluded_paths:
+            if p[-1] == '*':
+                if path.startswith(p[:-1]):
+                    return False
             if p == path:
                 return False
         return True
@@ -33,11 +38,9 @@ class Auth:
         """public method authorization_header
         that returns None - request will be the Flask request obj
         """
-        if request is None:
-            return None
-        if 'Authorization' not in request.headers:
-            return None
-        return request.headers["Authorization"]
+        if request:
+            return request.headers.get('Authorization')
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """curent_user that returns None - request will be the

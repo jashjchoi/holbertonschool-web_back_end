@@ -33,9 +33,11 @@ class Auth:
         """public method authorization_header
         that returns None - request will be the Flask request obj
         """
-        if request:
-            return request.headers.get('Authorization')
-        return None
+        if request is None:
+            return None
+        if 'Authorization' not in request.headers:
+            return None
+        return request.headers["Authorization"]
 
     def current_user(self, request=None) -> TypeVar('User'):
         """curent_user that returns None - request will be the

@@ -12,10 +12,10 @@ def login():
     """ POST /auth_session/login
     Return:Logged in user
     """
-    email = request.form.get('email')
+    user_email = request.form.get('email')
     if not user_email:
         return jsonify({"error": "email missing"}), 400
-    password = request.form.get('password')
+    user_pwd = request.form.get('password')
     if not user_pwd:
         return jsonify({"error": "password missing"}), 400
     try:
@@ -27,7 +27,7 @@ def login():
         return jsonify({"error": "no user found for this email"}), 404
 
     for user in user_results:
-        if not user.is_valid_password(password):
+        if not user.is_valid_password(user_pwd):
             return jsonify({"error": "wrong password"}), 401
 
     from api.v1.app import auth

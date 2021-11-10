@@ -12,14 +12,14 @@ def login():
     """ POST /auth_session/login
     Return:Logged in user
     """
-    user_email = request.form.get('email')
+    email = request.form.get('email')
     if not user_email:
         return jsonify({"error": "email missing"}), 400
-    user_pwd = request.form.get('password')
+    password = request.form.get('password')
     if not user_pwd:
         return jsonify({"error": "password missing"}), 400
     try:
-        user_results = User.search({"email": user_email})
+        user_results = User.search({'email': email})
     except Exception:
         return jsonify({"error": "no user found for this email"}), 404
 

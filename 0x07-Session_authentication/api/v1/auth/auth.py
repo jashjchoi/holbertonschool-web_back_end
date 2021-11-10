@@ -2,9 +2,10 @@
 """Auth class to manage the API authentication
 """
 
+import os
 from flask import request
 from typing import List, TypeVar
-import os
+
 
 class Auth:
     """Auth class

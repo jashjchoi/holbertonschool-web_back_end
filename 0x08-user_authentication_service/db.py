@@ -4,20 +4,18 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.session import Session
-from user import Base, User
+from typing import TypeVar, Any
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
-from typing import TypeVar, Any
+from user import Base, User
 
 
 class DB:
     """DB class
     """
-    def __init__(self) -> None:
-        """Initialize a new DB instance
-        """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+    def __init__(self):
+        """Constructor"""
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None

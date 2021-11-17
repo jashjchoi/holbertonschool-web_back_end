@@ -3,7 +3,8 @@
 database table named users
 """
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Integer, String
+import sqlalchemy
 
 Base = declarative_base()
 

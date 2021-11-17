@@ -4,15 +4,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
 from user import Base, User
 
 
 class DB:
     """DB class
     """
-    def __init__(self):
-        """Constructor"""
-        self._engine = create_engine("sqlite:///a.db", echo=False)
+    def __init__(self) -> None:
+        """Initialize a new DB instance
+        """
+        self._engine = create_engine("sqlite:///a.db")
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -36,16 +38,14 @@ class DB:
     def find_user_by(self, **kwargs) -> User:
         """Find and returns the first row found in the
         users table as filtered by input"""
-        session = self._session
-        query = session.query(User).filter_by(**kwargs)
-        return query.one()
+        return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """find_user_by to locate the user"""
-        user = self.find_user_by(id=user_id)
-        for key in kwargs:
-            if key not in user.__dir__():
+        found_user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if not hasattr(found_user, key):
                 raise ValueError
-            setattr(user, key, kwargs[key])
+            setattr(found_user, key, value)
         self._session.commit()
         return None

@@ -8,6 +8,9 @@ from sqlalchemy.orm.session import Session
 from user import Base, User
 
 
+DATA = ['id', 'email', 'hashed_password']
+
+
 class DB:
     """DB class
     """

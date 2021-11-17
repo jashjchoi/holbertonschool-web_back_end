@@ -8,7 +8,7 @@ from sqlalchemy.orm.session import Session
 from user import Base, User
 
 
-DATA = ['id', 'email', 'hashed_password']
+DATA = ['id', 'email', 'hashed_password', 'session_id', 'reset_token']
 
 
 class DB:

@@ -7,11 +7,19 @@ from typing import TypeVar, Union
 import bcrypt
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy.orm.exc import NoResultFound
+from uuid import uuid4
 
 
 def _hash_password(password: str) -> str:
-    """Takes in a password string arguments and returns bytes"""
+    """Takes in a password string arguments and returns bytes
+    """
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+def _generate_uuid() -> str:
+    """return a string representation of a new UUID
+    """
+    return str(uuid4())
 
 
 class Auth:

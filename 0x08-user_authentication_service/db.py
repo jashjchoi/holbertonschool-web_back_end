@@ -6,15 +6,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
-
-
-DATA = ['id', 'email', 'hashed_password', 'session_id', 'reset_token']
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
+from typing import TypeVar, Any
 
 
 class DB:
     """DB class
     """
-
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
@@ -33,13 +32,33 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """Add user to database
-        Returns: user created
-        """
-        if not email or not hashed_password:
-            return
+        """add the user"""
         user = User(email=email, hashed_password=hashed_password)
-        session = self._session
-        session.add(user)
-        session.commit()
+        self._session.add(user)
+        self._session.commit()
         return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find and returns the first row found in the
+        users table as filtered by input"""
+        if not kwargs:
+            raise InvalidRequestError
+        column_names = User.__table__.columns.keys()
+        for key in kwargs.keys():
+            if key not in column_names:
+                raise InvalidRequestError
+        query = self._session.query(User).filter_by(**kwargs).first()
+        if query is None:
+            raise NoResultFound
+        return query
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """find_user_by to locate the user"""
+        user = self.find_user_by(id=user_id)
+        column_names = User.__table__.columns.keys()
+        for key, val in kwargs.items():
+            setattr(user, key, val)
+        self._session.commit()
+        for key in kwargs.keys():
+            if key not in column_names:
+                raise ValueError

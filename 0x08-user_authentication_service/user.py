@@ -10,8 +10,7 @@ Base = declarative_base()
 
 class User(Base):
     """User model
-    Args:
-        Base (class): declarative base from sqlalchemy
+    Args: declarative base from sqlalchemy
     """
     __tablename__ = 'users'
 

@@ -49,8 +49,8 @@ def logout() -> str:
     """Logout function
     If the user exists destroy the session and redirect the user to GET /
     If the user does not exist, respond with a 403 HTTP status"""
-    user_session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(user_session_id)
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
     if not user:
         abort(403)
     AUTH.destroy_session(user.id)

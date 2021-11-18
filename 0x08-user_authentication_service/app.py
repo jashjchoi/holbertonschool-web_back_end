@@ -2,7 +2,7 @@
 """Basic Flask app
 """
 from auth import Auth
-from flask import Flask, jsonify, request, abort, redirect
+from flask import Flask, jsonify, request, abort, redirect, url_for
 
 AUTH = Auth()
 app = Flask(__name__)
@@ -44,18 +44,16 @@ def login() -> str:
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-def logout() -> str:
-    """Logout function
-    If the user exists destroy the session and redirect the user to GET /
-    If the user does not exist, respond with a 403 HTTP status"""
-    session_id = request.cookies.get("session_id", None)
+def logout():
+    """ user logout """
+    session_id = request.cookies.get('session_id')
     if session_id is None:
-        abort(403)
+        return abort(403)
     user = AUTH.get_user_from_session_id(session_id)
     if user is None:
         abort(403)
     AUTH.destroy_session(user.id)
-    return redirect('/')
+    return redirect(url_for('hello'))
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)

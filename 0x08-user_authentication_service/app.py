@@ -3,12 +3,9 @@
 """
 from auth import Auth
 from flask import Flask, jsonify, request, abort, redirect
-from flask.helpers import make_response
-from sqlalchemy.orm.exc import NoResultFound
 
 AUTH = Auth()
 app = Flask(__name__)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)

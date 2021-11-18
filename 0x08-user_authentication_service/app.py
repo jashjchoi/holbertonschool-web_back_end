@@ -65,12 +65,12 @@ def profile() -> str:
     """ GET /profile
     Find the user. If the user exist, respond with a 200 HTTP status
     """
-    ssession_id = request.cookies.get("session_id")
-    if session_id is not None:
-        user = AUTH.get_user_from_session_id(session_id)
-        if user is not None:
-            return jsonify({"email": user.email})
-    return abort(403)
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        return jsonify({"email": user.email}), 200
+    else:
+        abort(403)
 
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)

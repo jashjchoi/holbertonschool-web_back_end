@@ -93,11 +93,6 @@ class Auth:
 
     def update_password(self, reset_token: str, password: str) -> None:
         """update password
-        Args:
-            reset_token (str): reset token
-            password (str): user password
-        Raises:
-            ValueError: if not found user
         """
         try:
             user = self._db.find_user_by(reset_token=reset_token)

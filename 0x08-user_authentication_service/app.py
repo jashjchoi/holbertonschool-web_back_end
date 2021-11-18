@@ -6,10 +6,11 @@ from flask import Flask, jsonify, request, abort, redirect
 
 AUTH = Auth()
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
-def basic() -> str:
+def hello() -> str:
     """GET route index
     """
     return jsonify({"message": "Bienvenue"}), 200
@@ -49,13 +50,11 @@ def logout() -> str:
     If the user exists destroy the session and redirect the user to GET /
     If the user does not exist, respond with a 403 HTTP status"""
     session_id = request.cookies.get('session_id')
-    if session_id is None:
-        return abort(403)
     user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
+    if not user:
         abort(403)
     AUTH.destroy_session(user.id)
-    return redirect(url_for('basic'))
+    return redirect('/', code=302)
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)

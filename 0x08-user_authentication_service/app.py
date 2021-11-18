@@ -3,6 +3,8 @@
 """
 from auth import Auth
 from flask import Flask, jsonify, request, abort, redirect
+import os
+from os import getenv
 
 AUTH = Auth()
 app = Flask(__name__)

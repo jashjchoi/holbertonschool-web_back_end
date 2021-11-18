@@ -3,6 +3,8 @@
 """
 from auth import Auth
 from flask import Flask, jsonify, request, abort, redirect
+from flask.helpers import make_response
+from sqlalchemy.orm.exc import NoResultFound
 
 AUTH = Auth()
 app = Flask(__name__)
@@ -49,12 +51,13 @@ def logout() -> str:
     """Logout function
     If the user exists destroy the session and redirect the user to GET /
     If the user does not exist, respond with a 403 HTTP status"""
-    session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session_id)
-    if not user:
-        abort(403)
-    AUTH.destroy_session(user.id)
-    return redirect('/', code=302)
+    session_id = request.cookies.get("session_id")
+    if session_id is not None:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user is not None:
+            AUTH.destroy_session(user.id)
+            return redirect("/")
+    return abort(403)
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
@@ -62,12 +65,12 @@ def profile() -> str:
     """ GET /profile
     Find the user. If the user exist, respond with a 200 HTTP status
     """
-    session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session_id)
-    if user:
-        return jsonify({"email": user.email}), 200
-    else:
-        abort(403)
+    ssession_id = request.cookies.get("session_id")
+    if session_id is not None:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user is not None:
+            return jsonify({"email": user.email})
+    return abort(403)
 
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)

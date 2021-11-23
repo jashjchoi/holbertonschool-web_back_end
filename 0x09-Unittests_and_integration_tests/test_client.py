@@ -22,7 +22,18 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, org_name, mock_get_json):
         """GitHubOrgClient.org
         """
-        test = GithubOrgClient(org_name)
-        test.org()
+        test_org = GithubOrgClient(org_name)
+        test_org.org()
         url = f"https://api.github.com/orgs/{org_name}"
         mock_get_json.assert_called_once_with(url)
+
+    def test_public_repos_url(self):
+        """unittest for GithubOrgClient._public_repos_url
+        """
+        with patch('client.GithubOrgClient.org',
+                   new_callable=PropertyMock) as mock_test:
+            payload = {"repos_url": "https://api.github.com/orgs/google/repos"}
+            mock_test.return_value = payload
+            test_github = GithubOrgClient("google")
+            self.assertEqual(test_github._public_repos_url,
+                             mock_test.return_value["repos_url"])

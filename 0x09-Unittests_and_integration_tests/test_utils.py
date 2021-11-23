@@ -22,13 +22,13 @@ class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([({}, ("a",)),
                            ({"a": 1}, ("a", "b"))])
-
     def test_access_nested_map_exception(self, nested_map, path):
         """Test access nested map exception
         test that a KeyError is raised for the following inputs:
         """
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
+
 
 class TestGetJson(unittest.TestCase):
     """Unit test for utils.get_json
@@ -47,3 +47,30 @@ class TestGetJson(unittest.TestCase):
             res = get_json(test_url)
             self.assertEqual(res, test_payload)
             test_mock.json.assert_called_once()
+
+
+class TestMemoize(unittest.TestCase):
+    """Unit test for utils.memoize
+    """
+    def test_memoize(self):
+        """Function that test utils.memoize function
+        """
+        class TestClass:
+            """test_memoize"""
+            def a_method(self):
+                """test_memoize method"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """a_property method"""
+                return self.a_method()
+            """Test that when calling a_property twice,
+            the correct result is returned
+            but a_method is only called once using assert_called_once
+            """
+        with patch.object(TestClass, 'a_method', return_value=42) as test_mock:
+            test = TestClass()
+            test.a_property
+            test.a_property
+            test_mock.assert_called_once()

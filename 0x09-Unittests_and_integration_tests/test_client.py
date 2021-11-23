@@ -2,7 +2,7 @@
 """TestClient module"""
 
 import unittest
-from parameterized import parameterized, param
+from parameterized import parameterized
 from utils import requests, get_json
 from unittest.mock import Mock, patch
 import client
@@ -15,8 +15,8 @@ class TestGithubOrgClient(unittest.TestCase):
     with a couple of org examples to pass to GithubOrgClient
     """
     @parameterized.expand([
-        param(org="google", test_payload={"payload": True}),
-        param(org="abc", test_payload={"payload": False})
+        ("google", {"payload": True}),
+        ("abc", {"payload": True}),
     ])
     def test_org(self, org, test_payload):
         """GitHubOrgClient.org

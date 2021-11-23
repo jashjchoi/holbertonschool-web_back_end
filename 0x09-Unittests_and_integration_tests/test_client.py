@@ -4,7 +4,7 @@
 import unittest
 from parameterized import parameterized
 from utils import requests, get_json
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, PropertyMock
 import client
 from client import GithubOrgClient
 
@@ -15,14 +15,14 @@ class TestGithubOrgClient(unittest.TestCase):
     with a couple of org examples to pass to GithubOrgClient
     """
     @parameterized.expand([
-        ("google", {"payload": True}),
-        ("abc", {"payload": True}),
+        ("google"),
+        ("abc"),
     ])
-    def test_org(self, org, test_payload):
+    @patch('client.get_json')
+    def test_org(self, org_name, mock_get_json):
         """GitHubOrgClient.org
         """
-        with patch('client.get_json', return_value=test_payload) as mock:
-            github_test = GithubOrgClient(org_name=org)
-            res = github_test.org
-            self.assertEqual(res, test_payload)
-            mock.assert_called_once()
+        test = GithubOrgClient(org_name)
+        test.org()
+        url = f"https://api.github.com/orgs/{org_name}"
+        mock_get_json.assert_called_once_with(url)

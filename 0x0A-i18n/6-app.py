@@ -52,7 +52,7 @@ def get_locale():
     """
     my_locale = request.args.get('locale')
     if my_locale:
-        supt_lang = my_locale
+        sup_lang = my_locale
     elif g.user and g.user['locale'] in app.config['LANGUAGES']:
         sup_lang = g.user['locale']
     else:

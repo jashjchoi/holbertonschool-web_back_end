@@ -52,12 +52,12 @@ def get_locale():
     """
     my_locale = request.args.get('locale')
     if my_locale:
-        supported_lang = my_locale
+        supt_lang = my_locale
     elif g.user and g.user['locale'] in app.config['LANGUAGES']:
-        supported_lang = g.user['locale']
+        sup_lang = g.user['locale']
     else:
-        supported_lang = request.accept_languages.best_match(app.config['LANGUAGES'])
-    return supported_lang
+        sup_lang = request.accept_languages.best_match(app.config['LANGUAGES'])
+    return sup_lang
 
 
 def get_user(login_as: int):

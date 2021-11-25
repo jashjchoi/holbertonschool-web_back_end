@@ -37,3 +37,34 @@ class TestGithubOrgClient(unittest.TestCase):
             test_github = GithubOrgClient("google")
             self.assertEqual(test_github._public_repos_url,
                              mock_test.return_value["repos_url"])
+
+    @patch('client.get_json')
+    def test_public_repos(self, mocked_method):
+        '''self descriptive'''
+        payload = [{"name": "Google"}, {"name": "TT"}]
+        mocked_method.return_value = payload
+
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mocked_public:
+
+            mocked_public.return_value = "world"
+            response = GithubOrgClient('test').public_repos()
+
+            self.assertEqual(response, ["Google", "TT"])
+
+            mocked_public.assert_called_once()
+            mocked_method.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)])
+    def test_has_license(self, x, y, z):
+        """Parameterize test_has_license.
+        """
+        git_c = GithubOrgClient("google")
+        res = git_c.has_license(x, y)
+        self.assertEqual(res, z)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -3,6 +3,7 @@
 """
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
+import pytz
 from pytz import timezone
 from pytz.exceptions import UnknownTimeZoneError
 
@@ -75,17 +76,23 @@ def get_user(login_as: int):
 
 @babel.timezoneselector
 def get_timezone():
-    """Define a get_timezone function and
-    use the babel.timezoneselector decorator
+    """Define a get_timezone function
+    and use the babel.timezoneselector decorator
     """
-    timezone = request.args.get('timezone')
-    if timezone:
-        res = checked_timezone(timezone)
-    elif g.user and g.user['timezone']:
-        res = checked_timezone(g.user['timezone'])
-    else:
-        res = app.config['BABEL_DEFAULT_TIMEZONE']
-    return res if res else app.config['BABEL_DEFAULT_TIMEZONE']
+    try:
+        if request.args.get("timezone"):
+            timezone = request.args.get("timezone")
+            pytz.timezone(timezone)
+
+        elif g.user and g.user.get("timezone"):
+            timezone = g.user.get("timezone")
+            pytz.timezone(timezone)
+        else:
+            timezone = app.config["BABEL_DEFAULT_TIMEZONE"]
+            pytz.timezone(timezone)
+    except pytz.exceptions.UnknownTimeZoneError:
+        timezone = "UTC"
+    return timezone
 
 
 if __name__ == "__main__":

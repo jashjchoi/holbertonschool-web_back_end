@@ -3,7 +3,7 @@ export class HolbertonClass {
     this._year = year;
     this._location = location;
   }
-  // Getters
+
   get year() {
     return this._year;
   }
@@ -22,6 +22,7 @@ export class StudentHolberton {
     this._lastName = lastName;
     this._holbertonClass = holbertonClass;
   }
+
   // Getters
   get fullName() {
     return `${this._firstName} ${this._lastName}`;

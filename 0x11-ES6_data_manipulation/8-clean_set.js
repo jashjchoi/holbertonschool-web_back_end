@@ -1,4 +1,4 @@
-xport default function cleanSet(set, startString) {
+export default function cleanSet(set, startString) {
   const output = [];
 
   if (set instanceof Set === false) return '';

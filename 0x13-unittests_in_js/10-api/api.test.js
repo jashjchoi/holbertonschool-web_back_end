@@ -39,20 +39,34 @@ describe('Test API Integration', () => {
 
   describe('POST method /login with valid username', () => {
     it('returns 200 and correct name Betty', (done) => {
-      const login = {
+      const login_index = {
         url: 'http://localhost:7865/login',
         method: 'POST',
         json: {
           userName: 'Betty',
         },
       };
-
-      request(ogin, function (error, response, body) {
-        expect(response.statusCode).to.equal(200);
+      request(login_index, function (error, res, body) {
+        expect(res.statusCode).to.equal(200);
         expect(body).to.equal('Welcome Betty');
         done();
       });
     });
   });
-
+  
+  describe('GET method /available_payments ', () => {
+    it('return 200 with payment method string', (done) => {
+      const payment_index = {
+        url: 'http://localhost:7865/available_payments',
+        method: 'GET',
+      };
+      request(payment_index, function (error, res, body) {
+        expect(res.statusCode).to.equal(200);
+        expect(body).to.equal(
+          '{"payment_methods":{"credit_cards":true,"paypal":false}}'
+        );
+        done();
+      });
+    });
+  });
 });

@@ -19,14 +19,14 @@ describe('SUBTRACT', () => {
 });
 
 describe('DIVIDE', () => {
-  it('returns rounded positive divide', () => {
+  it('return rounded positive divide', () => {
     expect(calculateNumber('DIVIDE', 6, 2)).to.equal(3);
     expect(calculateNumber('DIVIDE', 6.1, 1.8)).to.equal(3);
     expect(calculateNumber('DIVIDE', 4.9, 5)).to.equal(1);
   });
-  it('returns Error', () => {
-    expect(calculateNumber('DIVIDE', 1, 0), 'Error');
-    expect(calculateNumber('DIVIDE', 3, 0), 'Error');
-    expect(calculateNumber('DIVIDE', 6, 0), 'Error');
+  it('return Error', () => {
+    expect(calculateNumber('DIVIDE', 1, 0)).to.equal('Error');
+    expect(calculateNumber('DIVIDE', 3, 0)).to.equal('Error');
+    expect(calculateNumber('DIVIDE', 2.5, 0)).to.equal('Error');
   });
 });

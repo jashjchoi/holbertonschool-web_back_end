@@ -14,15 +14,15 @@ describe('calculateNumber', function () {
     });
   });
 
-   describe('2nd rounded', function () {
+   describe('One float', function () {
     it('return 5', function () {
       assert.strictEqual(calculateNumber(3.7, 1), 5);
     });
   });
 
-    describe('Two floats', function () {
+    describe('2nd rounded', function () {
     it('return 5', function () {
-      assert.strictEqual(calculateNumber(1.5, 3.7), 6);
+      assert.strictEqual(calculateNumber(1, 5.2), 6);
     });
   });
 

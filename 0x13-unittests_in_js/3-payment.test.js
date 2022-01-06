@@ -9,6 +9,8 @@ describe('Spies', function () {
     const spyFunction = sinon.spy(utils, 'calculateNumber');
     const spyConsole = sinon.spy(console, 'log');
 
+    sendPaymentRequestToApi(100, 20);
+
     expect(spyFunction.calledOnceWithExactly('SUM', 100, 20)).to.be.true;
     expect(spyConsole.calledOnceWithExactly('The total is: 120')).to.be.true;
 

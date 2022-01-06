@@ -8,9 +8,15 @@ describe('calculateNumber', function () {
     });
   });
 
-  describe('One float', function () {
+  describe('1st rounded', function () {
     it('return 5', function () {
       assert.strictEqual(calculateNumber(1, 3.7), 5);
+    });
+  });
+
+   describe('2nd rounded', function () {
+    it('return 5', function () {
+      assert.strictEqual(calculateNumber(3.7, 1), 5);
     });
   });
 

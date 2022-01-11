@@ -1,7 +1,7 @@
 import kue from 'kue';
 const queue = kue.createQueue();
 const queueName = 'push_notification_code_2';
-const jobs = [
+const jobData = [
   {
     phoneNumber: '4153518780',
     message: 'This is the code 1234 to verify your account',
@@ -48,7 +48,7 @@ const jobs = [
   },
 ];
 
-jobs.forEach((jobData) => {
+jobData.forEach((jobData) => {
   const job = queue.create(queueName, jobData)
     .save((error) => {
       if (!error) {
